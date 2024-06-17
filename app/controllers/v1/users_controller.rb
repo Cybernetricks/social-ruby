@@ -1,4 +1,4 @@
-class UsersController < ActionController::API
+class V1::UsersController < ActionController::API
   def register
     user = User.new(user_params)
     if user.valid? && user.save
