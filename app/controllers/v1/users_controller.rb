@@ -20,6 +20,7 @@ class V1::UsersController < ActionController::API
       }, status: 400 and return
     end
     return render json: user,
+      meta: {access_token: '123'},
       status: 200
   end
 
