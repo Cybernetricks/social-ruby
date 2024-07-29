@@ -1,4 +1,6 @@
-class V1::UsersController < ActionController::API
+class V1::UsersController < ApplicationController
+  skip_before_action :authenticate_request, only: [:login, :register]
+
   def register
     user = User.new(user_params)
     if user.valid? && user.save
@@ -19,9 +21,15 @@ class V1::UsersController < ActionController::API
         message: 'Invalid credentials'
       }, status: 400 and return
     end
+    payload = {user_id: user.id}
+    access_token = AccessToken.encode(payload)
     return render json: user,
-      meta: {access_token: '123'},
+      meta: {access_token: access_token},
       status: 200
+  end
+
+  def test
+    render json: @current_user, status: 200
   end
 
   private
